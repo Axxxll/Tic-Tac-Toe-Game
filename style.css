@@ -110,3 +110,36 @@ body {
     height: calc(var(--mark-size) * .7);
     background-color: rgb(68, 83, 97);
 }
+
+.endgame-message {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .8);
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 7rem;
+    flex-direction: column;
+}
+
+.endgame-message button {
+    font-size: 4rem;
+    background-color: white;
+    border: .25em .5em black;
+    cursor: pointer;
+}
+
+.endgame-message button:hover {
+    background-color: black;
+    color: white;
+    border-color: white;
+}
+
+.endgame-message.show {
+    display: flex;
+
+}
