@@ -1,4 +1,4 @@
-let circleTurn: boolean = false
+let circleTurn: boolean
 const X_CLASS: string = "x"
 const CIRCLE_CLASS: string = "circle"
 
@@ -23,18 +23,24 @@ startGame()
 
 function startGame(): void {
     circleTurn = false
+    cells.forEach(cell => {
+        cell.addEventListener("click", () => { addMarker(cell) }, { once: true })
+    })
+    addHoverEffect()
+}
+
+restartBtn?.addEventListener('click', restartGame)
+
+function restartGame() {
     endGameMsgTxt!.innerText = ""
     endGameDiv?.classList.remove("show");
     cells.forEach(cell => {
         cell.classList.remove(X_CLASS)
         cell.classList.remove(CIRCLE_CLASS)
         cell.removeEventListener("click", () => { addMarker(cell) })
-        cell.addEventListener("click", () => { addMarker(cell) }, { once: true })
     })
-    addHoverEffect()
+    startGame()
 }
-
-restartBtn?.addEventListener('click', startGame)
 
 function renderGame(currentTurn: string): void {
     if (checkForWin(currentTurn)) {
@@ -72,8 +78,15 @@ function CheckForDraw(): boolean {
 }
 
 function addMarker(cell: Element): void {
-    const currentTurn = circleTurn ? CIRCLE_CLASS : X_CLASS
+    let currentTurn:string = ""
+    if (circleTurn) {
+        currentTurn = CIRCLE_CLASS
+    } 
+    else {
+        currentTurn = X_CLASS
+    }
     cell.classList.add(currentTurn)
+    console.log("added a marker")
     renderGame(currentTurn)
 }
 

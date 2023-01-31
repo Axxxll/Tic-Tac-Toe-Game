@@ -1,5 +1,5 @@
 "use strict";
-let circleTurn = false;
+let circleTurn;
 const X_CLASS = "x";
 const CIRCLE_CLASS = "circle";
 const cells = document.querySelectorAll("[data-cell]");
@@ -20,17 +20,22 @@ const winingCombinations = [
 startGame();
 function startGame() {
     circleTurn = false;
+    cells.forEach(cell => {
+        cell.addEventListener("click", () => { addMarker(cell); }, { once: true });
+    });
+    addHoverEffect();
+}
+restartBtn === null || restartBtn === void 0 ? void 0 : restartBtn.addEventListener('click', restartGame);
+function restartGame() {
     endGameMsgTxt.innerText = "";
     endGameDiv === null || endGameDiv === void 0 ? void 0 : endGameDiv.classList.remove("show");
     cells.forEach(cell => {
         cell.classList.remove(X_CLASS);
         cell.classList.remove(CIRCLE_CLASS);
         cell.removeEventListener("click", () => { addMarker(cell); });
-        cell.addEventListener("click", () => { addMarker(cell); }, { once: true });
     });
-    addHoverEffect();
+    startGame();
 }
-restartBtn === null || restartBtn === void 0 ? void 0 : restartBtn.addEventListener('click', startGame);
 function renderGame(currentTurn) {
     if (checkForWin(currentTurn)) {
         endGame(false);
@@ -64,8 +69,15 @@ function CheckForDraw() {
     return gameIsADraw;
 }
 function addMarker(cell) {
-    const currentTurn = circleTurn ? CIRCLE_CLASS : X_CLASS;
+    let currentTurn = "";
+    if (circleTurn) {
+        currentTurn = CIRCLE_CLASS;
+    }
+    else {
+        currentTurn = X_CLASS;
+    }
     cell.classList.add(currentTurn);
+    console.log("added a marker");
     renderGame(currentTurn);
 }
 function switchTurn() {
