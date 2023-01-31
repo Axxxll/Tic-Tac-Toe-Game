@@ -37,7 +37,7 @@ function restartGame() {
     cells.forEach(cell => {
         cell.classList.remove(X_CLASS)
         cell.classList.remove(CIRCLE_CLASS)
-        cell.removeEventListener("click", () => { addMarker(cell) })
+        cell.removeEventListener("click", () => {})
     })
     startGame()
 }
@@ -85,8 +85,14 @@ function addMarker(cell: Element): void {
     else {
         currentTurn = X_CLASS
     }
-    cell.classList.add(currentTurn)
-    console.log("added a marker")
+    if (cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS))
+    {
+        return
+    }
+    else {
+        console.log("A marker was added")
+        cell.classList.add(currentTurn)
+    }
     renderGame(currentTurn)
 }
 
