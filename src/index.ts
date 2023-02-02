@@ -1,4 +1,4 @@
-let circleTurn: boolean
+let circleTurn: boolean = true
 const X_CLASS: string = "x"
 const CIRCLE_CLASS: string = "circle"
 
@@ -22,14 +22,17 @@ const winingCombinations = [
 startGame()
 
 function startGame(): void {
-    circleTurn = false
+    circleTurn = !circleTurn
     cells.forEach(cell => {
-        cell.addEventListener("click", () => { addMarker(cell) }, { once: true })
+        // @ts-nocheck
+        cell.addEventListener('click', addMarker, { once: true })
     })
     addHoverEffect()
 }
 
 restartBtn?.addEventListener('click', restartGame)
+
+
 
 function restartGame() {
     endGameMsgTxt!.innerText = ""
@@ -37,7 +40,7 @@ function restartGame() {
     cells.forEach(cell => {
         cell.classList.remove(X_CLASS)
         cell.classList.remove(CIRCLE_CLASS)
-        cell.removeEventListener("click", () => {})
+        cell.removeEventListener("click", addMarker)
     })
     startGame()
 }
@@ -77,22 +80,10 @@ function CheckForDraw(): boolean {
     return gameIsADraw
 }
 
-function addMarker(cell: Element): void {
-    let currentTurn:string = ""
-    if (circleTurn) {
-        currentTurn = CIRCLE_CLASS
-    } 
-    else {
-        currentTurn = X_CLASS
-    }
-    if (cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS))
-    {
-        return
-    }
-    else {
-        console.log("A marker was added")
-        cell.classList.add(currentTurn)
-    }
+function addMarker(element: any): void {
+    const cell = element.srcElement
+    let currentTurn: string = circleTurn ? CIRCLE_CLASS : X_CLASS
+    cell.classList.add(currentTurn)
     renderGame(currentTurn)
 }
 
@@ -113,7 +104,7 @@ function addHoverEffect(): void {
 function endGame(IsDraw: boolean): void {
     endGameDiv?.classList.add("show");
     if (!IsDraw) {
-        endGameMsgTxt!.innerText = `${circleTurn ? "Circle's" : "X's"} wins!`
+        endGameMsgTxt!.innerText = `${circleTurn ? "Circle get's the squre" : "X marks the spot"}!`
     }
     else {
         endGameMsgTxt!.innerText = "It is a draw!"
